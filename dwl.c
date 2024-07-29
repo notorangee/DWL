@@ -1530,6 +1530,7 @@ dwl_ipc_output_set_tags(struct wl_client *client, struct wl_resource *resource, 
 	if (!ipc_output)
 		return;
 	monitor = ipc_output->mon;
+	selmon = monitor;
 
 	if (!newtags || newtags == monitor->tagset[monitor->seltags])
 		return;
