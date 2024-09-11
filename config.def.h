@@ -21,12 +21,22 @@ static const float fullscreen_bg[]         = {0.0f, 0.0f, 0.0f, 0.0f}; /* You ca
 /* logging */
 static int log_level = WLR_ERROR;
 
+/* Autostart */
+static const char *const autostart[] = {
+        "wbg", "/home/orange/Pictures/Wallpaper/wallpaper1.jpg", NULL,
+        "alacritty", "-T", "Alacritty - AutoStart", NULL,
+        "google-chrome-stable", NULL,
+        NULL /* terminate */
+};
+
 /* NOTE: ALWAYS keep a rule declared even if you don't use rules (e.g leave at least one example) */
 static const Rule rules[] = {
 	/* app_id             title       tags mask     isfloating   monitor  scratchkey */
 	/* examples: */
 	{ "Gimp_EXAMPLE",     NULL,       0,                1,           -1,       0 }, /* Start on currently visible tags floating, not tiled */
 	{ "firefox_EXAMPLE",  NULL,       1 << 8,           0,           -1,       0 }, /* Start on ONLY tag "9" */
+  { "Alacritty",        "Alacritty - AutoStart",  0,  0,           -1,       0 },
+  { "Google-chrome",    NULL,       1 << 1,           0,           -1,       0 },
   { "Alacritty",        "ncmpcpp",  0,                1,           -1,       0 },
 	{ "Alacritty",        "bluetuith",0,                1,           -1,       0 },
 	{ "Gimp",             NULL,       0,                1,           -1,       0 },
