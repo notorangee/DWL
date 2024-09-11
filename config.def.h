@@ -80,6 +80,18 @@ static const struct xkb_rule_names xkb_rules = {
 	.options = NULL,
 };
 
+/* input devices */
+static const InputRule inputrules[] = {
+	/* name                      kbcreate                 ptrcreate      */
+	/* ignore bad device - like a touchpad ;) */
+	{ "BAD DEVICE",              NULL,                    NULL                },
+	/* ungroup ydotool device - fixes a bug */
+	{ "ydotoold virtual device", createungroupedkeyboard, createpointer       },
+	/* put your touchpad name here to enable toggle touchpad */
+	{ "MSFT0001:00 04F3:3186 Touchpad",           createkeyboard,          createtogglepointer },
+	{ NULL,                      createkeyboard,          createpointer       },
+};
+
 static const int repeat_rate = 30;
 static const int repeat_delay = 300;
 
@@ -151,8 +163,6 @@ static const char *musiccmd[] = {"alacritty", "-t", "ncmpcpp", "-e", "ncmpcpp", 
 static const char *systraycmd[] = {"/home/orange/Dwm/Scripts/system/trayer.sh", NULL };
 /*锁屏*/
 static const char *forceoffandclockcmd[] = { "/home/orange/Dwm/Scripts/system/forceoff_lock.sh", NULL };
-/*触摸板*/
-static const char *touchpadcmd[] = { "/home/orange/Dwm/Scripts/system/touchpad.sh", NULL };
 /*休眠*/
 static const char *hibernatecmd[] = { "systemctl", "hibernate", NULL };
 /*关机*/
@@ -174,7 +184,7 @@ static const Key keys[] = {
   { MODKEY,                    XKB_KEY_F7,         spawn,          {.v = forceoffandclockcmd } } ,
   { MODKEY,                    XKB_KEY_F8,         spawn,          {.v = systraycmd } } ,
   { MODKEY,                    XKB_KEY_F9,         spawn,          {.v = musiccmd } } ,
-  { MODKEY,                    XKB_KEY_F10,        spawn,          {.v = touchpadcmd } } ,
+  { MODKEY,                    XKB_KEY_F10,        togglepointer,  {0} },
 	{ MODKEY,             		   XKB_KEY_Escape,     spawn,          SHCMD("flameshot gui") }, //Esc
 
 	/*Super+Shift*/
