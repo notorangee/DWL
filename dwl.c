@@ -2137,7 +2137,8 @@ monocle(Monitor *m)
 	wl_list_for_each(c, &clients, link) {
 		if (!VISIBLEON(c, m) || c->isfloating || c->isfullscreen)
 			continue;
-		resize(c, m->w, 0);
+		resize(c, (struct wlr_box){.x = m->w.x + gappx, .y = m->w.y + gappx,
+				.width = m->w.width - 2*gappx, .height = m->w.height - 2*gappx}, 0);
 		n++;
 	}
 	if (n > 1 && n < 10000000)
