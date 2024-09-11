@@ -16,7 +16,7 @@ static const float urgentcolor[]           = COLOR(0xff0000ff);
 static const float fullscreen_bg[]         = {0.1f, 0.1f, 0.1f, 1.0f}; /* You can also use glsl colors */
 
 /* tagging - TAGCOUNT must be no greater than 31 */
-#define TAGCOUNT (9)
+#define TAGCOUNT (6)
 
 /* logging */
 static int log_level = WLR_ERROR;
@@ -25,17 +25,22 @@ static int log_level = WLR_ERROR;
 static const Rule rules[] = {
 	/* app_id             title       tags mask     isfloating   monitor  scratchkey */
 	/* examples: */
-	{ "Gimp_EXAMPLE",     NULL,       0,            1,           -1,       0 }, /* Start on currently visible tags floating, not tiled */
-	{ "firefox_EXAMPLE",  NULL,       1 << 8,       0,           -1,       0 }, /* Start on ONLY tag "9" */
+	{ "Gimp_EXAMPLE",     NULL,       0,                1,           -1,       0 }, /* Start on currently visible tags floating, not tiled */
+	{ "firefox_EXAMPLE",  NULL,       1 << 8,           0,           -1,       0 }, /* Start on ONLY tag "9" */
+  { "Alacritty",        "ncmpcpp",  0,                1,           -1,       0 },
+	{ "Alacritty",        "bluetuith",0,                1,           -1,       0 },
+	{ "Gimp",             NULL,       0,                1,           -1,       0 },
+	{ "wps",              NULL,       0,                1,           -1,       0 },
+	{ "QQ",               NULL,       0,                1,           -1,       0 },
   { NULL,               scratchpadname, 0,            1,           -1,     's' },
 };
 
 /* layout(s) */
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+	{ "",      tile },
+	{ "󰈺",      NULL },    /* no layout function means floating behavior */
+	{ "",      monocle },
 };
 
 /* monitors */
@@ -127,11 +132,43 @@ static const char *menucmd[] = { "rofi", "-show", "drun", NULL };
 /* named scratchpads - First arg only serves to match against key in rules*/
 static const char *scratchpadcmd[] = { "s", "alacritty", "-t", scratchpadname, NULL };
 
+/*其它小窗口*/
+static const char *bluetuithcmd[] = {"alacritty", "-t", "bluetuith", "-e", "bluetuith", NULL };
+static const char *musiccmd[] = {"alacritty", "-t", "ncmpcpp", "-e", "ncmpcpp", NULL };
+static const char *systraycmd[] = {"/home/orange/Dwm/Scripts/system/trayer.sh", NULL };
+/*锁屏*/
+static const char *forceoffandclockcmd[] = { "/home/orange/Dwm/Scripts/system/forceoff_lock.sh", NULL };
+/*触摸板*/
+static const char *touchpadcmd[] = { "/home/orange/Dwm/Scripts/system/touchpad.sh", NULL };
+/*休眠*/
+static const char *hibernatecmd[] = { "systemctl", "hibernate", NULL };
+/*关机*/
+static const char *poweroffcmd[]  = { "poweroff", NULL };
+/*重启*/
+static const char *rebootcmd[]  = { "reboot", NULL };
+
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
 	/* modifier                  key                 function        argument */
 	{ MODKEY,                    XKB_KEY_p,          spawn,          {.v = menucmd} },
 	{ MODKEY,                    XKB_KEY_Return,     spawn,          {.v = termcmd} },
+  { MODKEY,                    XKB_KEY_F1,         spawn,          SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle") },
+  { MODKEY,                    XKB_KEY_F2,         spawn,          SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-") },
+  { MODKEY,                    XKB_KEY_F3,         spawn,          SHCMD("wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+") },
+	{ MODKEY,                    XKB_KEY_F4,         spawn,  	       {.v = bluetuithcmd } },
+  { MODKEY,                    XKB_KEY_F5,         spawn,          SHCMD("light -U 5") },
+  { MODKEY,                    XKB_KEY_F6,         spawn,          SHCMD("light -A 5") },
+  { MODKEY,                    XKB_KEY_F7,         spawn,          {.v = forceoffandclockcmd } } ,
+  { MODKEY,                    XKB_KEY_F8,         spawn,          {.v = systraycmd } } ,
+  { MODKEY,                    XKB_KEY_F9,         spawn,          {.v = musiccmd } } ,
+  { MODKEY,                    XKB_KEY_F10,        spawn,          {.v = touchpadcmd } } ,
+	{ MODKEY,             		   XKB_KEY_Escape,     spawn,          SHCMD("flameshot gui") }, //Esc
+
+	/*Super+Shift*/
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Escape,     spawn,          {.v = hibernatecmd } }, //休眠
+  { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_F1,         spawn,          {.v = poweroffcmd } }, 
+  { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_F2,         spawn,          {.v = rebootcmd } }, 
+
   { MODKEY,                    XKB_KEY_w,          togglescratch,  {.v = scratchpadcmd } },
 	{ MODKEY,                    XKB_KEY_v,          togglebar,      {0} },
 	{ MODKEY,                    XKB_KEY_j,          focusstack,     {.i = +1} },
