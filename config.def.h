@@ -185,7 +185,7 @@ static const Key keys[] = {
   { MODKEY,                    XKB_KEY_F8,         spawn,          {.v = systraycmd } } ,
   { MODKEY,                    XKB_KEY_F9,         spawn,          {.v = musiccmd } } ,
   { MODKEY,                    XKB_KEY_F10,        togglepointer,  {0} },
-	{ MODKEY,             		   XKB_KEY_Escape,     spawn,          SHCMD("flameshot gui") }, //Esc
+	{ MODKEY,             		   XKB_KEY_Escape,     spawn,          SHCMD("grimblast copy screen") }, //Esc
 
 	/*Super+Shift*/
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Escape,     spawn,          {.v = hibernatecmd } }, //休眠
